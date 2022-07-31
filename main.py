@@ -9,10 +9,9 @@ WORK_MIN = 25
 SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
 
-# ---------------------------- TIMER RESET ------------------------------- # 
+from tkinter import *
 
-# ---------------------------- TIMER MECHANISM ------------------------------- # 
+window = Tk()
+window.title("Nazif's Pomodoro")
+window.config(padx=100, pady=50)
 
-# ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
-
-# ---------------------------- UI SETUP ------------------------------- #
