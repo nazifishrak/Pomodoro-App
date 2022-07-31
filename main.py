@@ -10,19 +10,40 @@ FONT_NAME2 = "Courier"
 WORK_MIN = 25
 SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
-
+reps = 0
 from math import floor
 from tkinter import *
 
 # ------------------------Timer--------------------------
 def start_counter():
-    count_down(WORK_MIN*60)
+    global reps
+    reps+=1
+    # if reps 1,3,5... then its work time
+    if  reps%2!=0:
+        timer_Label.config(text="WORK")
+        count_down(WORK_MIN*60)
+    elif reps%8==0:
+        timer_Label.config(text="LONG BREAK",font=("Century Gothic", 30, "bold"))
+        count_down(LONG_BREAK_MIN*60)
+    else:
+        timer_Label.config(text="SHORT BREAK", font=("Century Gothic", 30, "bold"))
+        count_down(SHORT_BREAK_MIN*60)
+    
 def count_down(count):
-    canvas.itemconfig(timer_text, text=f"{floor(count/60)}: {count%60}")
+    count_min = floor(count/60)
+    count_sec = int(count%60)
+    if count_sec <=9:
+        count_sec = f"0{count_sec}"
+    canvas.itemconfig(timer_text, text=f"{count_min}: {count_sec}")
     if count>0:
-        window.after(1000, lambda : count_down(count-1))
+        window.after(2, lambda : count_down(count-1))
+    else:
+        start_counter()
 
-
+def reset():
+    global reps
+    reps =0
+    start_counter()
 
 
 
@@ -47,7 +68,7 @@ canvas.grid(row=1,column=1)
 
 start_button = Button(text="START", fg="white", bg=PURPLE, highlightthickness=0,width=10,height=2, font=(FONT_NAME,10,"bold"), command=start_counter)
 start_button.grid(row=2, column=0)
-reset_button = Button(text="RESET", fg="white", bg=PURPLE, highlightthickness=0,width=10,height=2, font=(FONT_NAME,10,"bold"))
+reset_button = Button(text="RESET", fg="white", bg=PURPLE, highlightthickness=0,width=10,height=2, font=(FONT_NAME,10,"bold"),command=reset)
 reset_button.grid(row=2, column=2)
 check_mark = Label(text="✔️",fg=GREEN, bg=YELLOW, highlightthickness=0, font=(FONT_NAME, 18, "bold"))
 check_mark.grid(row=3, column=1)
