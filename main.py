@@ -11,8 +11,25 @@ WORK_MIN = 25
 SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
 
+from math import floor
 from tkinter import *
 
+# ------------------------Timer--------------------------
+def start_counter():
+    count_down(WORK_MIN*60)
+def count_down(count):
+    canvas.itemconfig(timer_text, text=f"{floor(count/60)}: {count%60}")
+    if count>0:
+        window.after(1000, lambda : count_down(count-1))
+
+
+
+
+
+
+
+
+# -----------------------UI------------------------------------------
 window = Tk()
 window.title("Nazif's Pomodoro")
 window.config(padx=100, pady=50, bg=YELLOW)
@@ -23,12 +40,12 @@ tomato_img = PhotoImage(file ="tomato.png")
 
 canvas= Canvas(width=200, height=224, bg = YELLOW, highlightthickness=0)
 canvas.create_image(100,100, image = tomato_img)
-canvas.create_text(100, 130, text=f'00:00', font=(FONT_NAME, 35, "bold"), fill = "white")
+timer_text=canvas.create_text(100, 130, text=f'00:00', font=(FONT_NAME, 35, "bold"), fill = "white")
 canvas.grid(row=1,column=1)
 
 
 
-start_button = Button(text="START", fg="white", bg=PURPLE, highlightthickness=0,width=10,height=2, font=(FONT_NAME,10,"bold"))
+start_button = Button(text="START", fg="white", bg=PURPLE, highlightthickness=0,width=10,height=2, font=(FONT_NAME,10,"bold"), command=start_counter)
 start_button.grid(row=2, column=0)
 reset_button = Button(text="RESET", fg="white", bg=PURPLE, highlightthickness=0,width=10,height=2, font=(FONT_NAME,10,"bold"))
 reset_button.grid(row=2, column=2)
