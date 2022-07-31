@@ -11,6 +11,9 @@ WORK_MIN = 25
 SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
 reps = 0
+counter =1
+cycle =0
+timer = None
 from math import floor
 from tkinter import *
 
@@ -20,13 +23,16 @@ def start_counter():
     reps+=1
     # if reps 1,3,5... then its work time
     if  reps%2!=0:
-        timer_Label.config(text="WORK")
+        timer_Label.config(text="WORK",font=("Century Gothic", 40, "bold"), fg=GREEN)
         count_down(WORK_MIN*60)
     elif reps%8==0:
-        timer_Label.config(text="LONG BREAK",font=("Century Gothic", 30, "bold"))
+        timer_Label.config(text="BREAK",font=("Century Gothic", 40, "bold"), fg= RED)
         count_down(LONG_BREAK_MIN*60)
+        global cycle
+        cycle+=1
+        window.title(f"Nazif's Pomodoro Cycles Completed {cycle}")
     else:
-        timer_Label.config(text="SHORT BREAK", font=("Century Gothic", 30, "bold"))
+        timer_Label.config(text="BREAK", font=("Century Gothic", 40, "bold"), fg=PINK)
         count_down(SHORT_BREAK_MIN*60)
     
 def count_down(count):
@@ -36,14 +42,33 @@ def count_down(count):
         count_sec = f"0{count_sec}"
     canvas.itemconfig(timer_text, text=f"{count_min}: {count_sec}")
     if count>0:
-        window.after(2, lambda : count_down(count-1))
+        global timer
+        timer = window.after(1, lambda : count_down(count-1))
     else:
         start_counter()
+        if reps %2 ==0:
+            global counter
+            ticks ="✔️"
+            ticks =counter*"✔️"
+            check_mark.config(text=f"{ticks} ")
+            counter+=1
+            if counter>=4:
+                counter =0
 
 def reset():
-    global reps
-    reps =0
-    start_counter()
+
+    window.after_cancel(timer)
+    global cycle, reps, counter
+    reps = 0
+    counter =1
+    cycle =0
+    canvas.itemconfig(timer_text, text=f"00: 00")
+    window.title(f"Nazif's Pomodoro Cycles Completed {cycle}")
+    timer_Label.config(text="Timer")
+    check_mark.config(text="")
+
+    
+    
 
 
 
@@ -52,7 +77,7 @@ def reset():
 
 # -----------------------UI------------------------------------------
 window = Tk()
-window.title("Nazif's Pomodoro")
+window.title(f"Nazif's Pomodoro Cycles Completed {cycle}")
 window.config(padx=100, pady=50, bg=YELLOW)
 timer_Label = Label(text="Timer", fg=GREEN, font=("Century Gothic", 40, "bold"), bg=YELLOW)
 timer_Label.grid(row=0, column=1)
@@ -70,6 +95,6 @@ start_button = Button(text="START", fg="white", bg=PURPLE, highlightthickness=0,
 start_button.grid(row=2, column=0)
 reset_button = Button(text="RESET", fg="white", bg=PURPLE, highlightthickness=0,width=10,height=2, font=(FONT_NAME,10,"bold"),command=reset)
 reset_button.grid(row=2, column=2)
-check_mark = Label(text="✔️",fg=GREEN, bg=YELLOW, highlightthickness=0, font=(FONT_NAME, 18, "bold"))
+check_mark = Label(text="",fg=GREEN, bg=YELLOW, highlightthickness=0, font=(FONT_NAME, 18, "bold"))
 check_mark.grid(row=3, column=1)
 window.mainloop()
