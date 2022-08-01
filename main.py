@@ -17,7 +17,7 @@ timer = None
 state = False #For sticky mode
 from math import floor
 from tkinter import *
-from playsound import playsound
+from playsound import playsound  # use version 1.2.2 otherwise doesnt work
 
 
 # Plays sound
@@ -30,7 +30,7 @@ def start_counter():
     # if reps 1,3,5... then its work time
     if  reps%2!=0:
         timer_Label.config(text="WORK",font=("Century Gothic", 40, "bold"), fg=GREEN)
-        window.attributes("-topmost", True)
+        # window.attributes("-topmost", True)
         count_down(WORK_MIN*60)
     elif reps%8==0:
         timer_Label.config(text="BREAK",font=("Century Gothic", 40, "bold"), fg= RED)
