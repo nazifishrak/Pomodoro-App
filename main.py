@@ -17,7 +17,12 @@ timer = None
 state = False #For sticky mode
 from math import floor
 from tkinter import *
+from playsound import playsound
 
+
+# Plays sound
+def playsound_command():
+    playsound('./mixkit-correct-answer-tone-2870.wav')
 # ------------------------Timer--------------------------
 def start_counter():
     global reps
@@ -53,6 +58,7 @@ def count_down(count):
             ticks ="✔️"
             ticks =counter*"✔️"
             check_mark.config(text=f"{ticks} ")
+            playsound_command()
             counter+=1
             if counter>=4:
                 counter =0
